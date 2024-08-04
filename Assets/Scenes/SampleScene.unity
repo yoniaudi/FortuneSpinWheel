@@ -196,6 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97f13852dcdef1a4bb42c57529b959a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Server: {fileID: 79996602}
   m_FortuneWheelTransform: {fileID: 1136374979}
   m_FortuneWheelSpinSpeed: 5
   m_FortuneWheelSpinDuration: 7

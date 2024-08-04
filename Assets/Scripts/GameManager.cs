@@ -4,19 +4,31 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private Server m_Server = null;
     [SerializeField] private Transform m_FortuneWheelTransform = null;
     [SerializeField] private float m_FortuneWheelSpinSpeed = 5f;
     [SerializeField] private float m_FortuneWheelSpinDuration = 7f;
     private const int k_AmountOfPrizes = 6;
+    private int m_PrizeIndex = -1;
+
+    private void Start()
+    {
+        m_Server.PrizeIndex_Received += prizeIndexReceived;
+    }
+
+    private void prizeIndexReceived(int i_PrizeIndex)
+    {
+        m_PrizeIndex = i_PrizeIndex;
+    }
 
     public void btnSpin_Clicked()
     {
-        Debug.Log("Clicked");
         rotateFortuneWheel();
     }
 
     private void rotateFortuneWheel()
     {
+        m_Server.GetPrizeIndex();
         StartCoroutine(rotateWheel());
     }
     
@@ -29,8 +41,11 @@ public class GameManager : MonoBehaviour
 
         while (currentTime < m_FortuneWheelSpinDuration)
         {
-            currentTime += Time.deltaTime;
-            spinSpeed -= deceleration * Time.deltaTime;
+            if (m_PrizeIndex != -1)
+            {
+                currentTime += Time.deltaTime;
+                spinSpeed -= deceleration * Time.deltaTime;
+            }
 
             if (spinSpeed >= 0)
             {
@@ -41,5 +56,10 @@ public class GameManager : MonoBehaviour
         }
                 
         m_FortuneWheelTransform.Rotate(Vector3.back, 0f);
+    }
+
+    private void OnDestroy()
+    {
+        m_Server.PrizeIndex_Received -= prizeIndexReceived;
     }
 }
