@@ -14,7 +14,7 @@ public class Server : MonoBehaviour
 
     private IEnumerator GetIndexFromServer()
     {
-        int prizeIndex = UnityEngine.Random.Range(0, 7);
+        int prizeIndex = UnityEngine.Random.Range(0, 6);
         float responseTime = UnityEngine.Random.Range(2f, 8f);
 
         yield return new WaitForSeconds(responseTime);

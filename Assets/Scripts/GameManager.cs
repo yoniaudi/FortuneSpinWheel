@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     public void btnSpin_Clicked()
     {
+        m_FortuneWheelTransform.eulerAngles = Vector3.zero;
         rotateFortuneWheel();
     }
 
@@ -31,7 +35,13 @@ public class GameManager : MonoBehaviour
         m_Server.GetPrizeIndex();
         StartCoroutine(rotateWheel());
     }
-    
+
+    public void btnTestButton_Click()
+    {
+        m_Server.GetPrizeIndex();
+    }
+
+
     private IEnumerator rotateWheel()
     {
         float currentTime = 0f;
@@ -39,6 +49,7 @@ public class GameManager : MonoBehaviour
         float deceleration = spinSpeed / m_FortuneWheelSpinDuration;
         float targetAngle = 0f;
         bool isTargetAngleSet = false;
+        //float rotation = 0f;
 
         while (currentTime < m_FortuneWheelSpinDuration)
         {
@@ -48,6 +59,24 @@ public class GameManager : MonoBehaviour
 
                 targetAngle = rangeOfPrizeAngle * m_PrizeIndex;
                 isTargetAngleSet = true;
+                Debug.Log($"Server -> Prize index number: {m_PrizeIndex}{Environment.NewLine}, Target angle: {targetAngle}");
+            }
+
+            currentTime += Time.deltaTime;
+            spinSpeed -= deceleration * Time.deltaTime;
+            m_FortuneWheelTransform.Rotate(Vector3.forward, spinSpeed * Time.deltaTime);
+
+            if (isTargetAngleSet == true && targetAngle <= m_FortuneWheelTransform.rotation.z &&
+                m_FortuneWheelTransform.rotation.z <= targetAngle + (360f / (k_AmountOfPrizes + 1)))
+            {
+                m_FortuneWheelTransform.rotation = quaternion.Euler(0, 0, targetAngle);
+                break;
+            }
+            else
+            {
+                currentTime += Time.deltaTime;
+                spinSpeed -= deceleration * Time.deltaTime;
+                m_FortuneWheelTransform.Rotate(Vector3.forward, spinSpeed * Time.deltaTime);
             }
 
             if (isTargetAngleSet == true)
@@ -57,24 +86,29 @@ public class GameManager : MonoBehaviour
 
                 currentTime += Time.deltaTime;
                 spinSpeed -= deceleration * Time.deltaTime;
-                currentRotation = m_FortuneWheelTransform.eulerAngles.z;
+                currentRotation = m_FortuneWheelTransform.eulerAngles.z % 360;
                 deltaAngle = Mathf.DeltaAngle(currentRotation, targetAngle);
 
-                if (Mathf.Abs(deltaAngle) < 5f )
+                if (Mathf.Abs(deltaAngle) < 30f)
                 {
-                    spinSpeed = Mathf.Lerp(spinSpeed, 0, Time.deltaTime * 10);
+                    spinSpeed = Mathf.Lerp(spinSpeed, 0, Time.deltaTime * 5);
                 }
             }
 
-            if (spinSpeed >= 0)
+            if (spinSpeed >= 0 || currentTime < m_FortuneWheelSpinDuration)
             {
                 m_FortuneWheelTransform.Rotate(Vector3.back, spinSpeed * Time.deltaTime);
             }
 
+            //m_FortuneWheelTransform.Rotate(Vector3.forward, spinSpeed * Time.deltaTime);
+            //rotation += spinSpeed * Time.deltaTime;
+            //m_FortuneWheelTransform.rotation = Quaternion.Euler(0, 0, rotation);
+
             yield return null;
         }
-                
-        m_FortuneWheelTransform.Rotate(Vector3.back, 0f);
+
+        //m_FortuneWheelTransform.Rotate(Vector3.back, 0f);
+        //m_FortuneWheelTransform.rotation = Quaternion.Euler(0, 0, targetAngle);
         m_PrizeIndex = -1;
     }
 
