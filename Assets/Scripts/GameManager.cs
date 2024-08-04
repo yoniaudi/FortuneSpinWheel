@@ -34,17 +34,36 @@ public class GameManager : MonoBehaviour
     
     private IEnumerator rotateWheel()
     {
-        int multiplyer = Random.Range(1, 4);
         float currentTime = 0f;
         float spinSpeed = m_FortuneWheelSpinSpeed * 360;
         float deceleration = spinSpeed / m_FortuneWheelSpinDuration;
+        float targetAngle = 0f;
+        bool isTargetAngleSet = false;
 
         while (currentTime < m_FortuneWheelSpinDuration)
         {
-            if (m_PrizeIndex != -1)
+            if (m_PrizeIndex != -1 && isTargetAngleSet == false)
             {
+                float rangeOfPrizeAngle = 360f / (k_AmountOfPrizes + 1);
+
+                targetAngle = rangeOfPrizeAngle * m_PrizeIndex;
+                isTargetAngleSet = true;
+            }
+
+            if (isTargetAngleSet == true)
+            {
+                float currentRotation = 0f;
+                float deltaAngle = 0f;
+
                 currentTime += Time.deltaTime;
                 spinSpeed -= deceleration * Time.deltaTime;
+                currentRotation = m_FortuneWheelTransform.eulerAngles.z;
+                deltaAngle = Mathf.DeltaAngle(currentRotation, targetAngle);
+
+                if (Mathf.Abs(deltaAngle) < 5f )
+                {
+                    spinSpeed = Mathf.Lerp(spinSpeed, 0, Time.deltaTime * 10);
+                }
             }
 
             if (spinSpeed >= 0)
@@ -56,6 +75,7 @@ public class GameManager : MonoBehaviour
         }
                 
         m_FortuneWheelTransform.Rotate(Vector3.back, 0f);
+        m_PrizeIndex = -1;
     }
 
     private void OnDestroy()
