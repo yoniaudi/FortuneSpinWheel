@@ -24,11 +24,10 @@ public class FortuneWheel : MonoBehaviour
 
     private IEnumerator SpinWheel()
     {
-        float fullSpin = 360f;
+        const float fullSpin = 360f;
+        const int prizeSegments = 6;
         float spinRate = m_SpinSpeed * fullSpin;
-        float deceleration = spinRate / 3f;
-        float targetDegreeRange = fullSpin / 6f;
-        float targetAngleWithOffset = 0f;
+        float targetDegreeRange = fullSpin / prizeSegments;
         float targetStartDegree = 0f;
 
         m_IsSpinning = true;
@@ -36,21 +35,31 @@ public class FortuneWheel : MonoBehaviour
 
         while (m_IsSpinning == true)
         {
-            transform.rotation *= Quaternion.Euler(Vector3.forward * spinRate * Time.deltaTime);
-
+            Spin(spinRate);
             yield return null;
         }
 
         targetStartDegree = targetDegreeRange * m_StopIndex;
+
+        yield return StartCoroutine(DecelerateAndStop(spinRate, targetStartDegree, targetDegreeRange));
+    }
+
+    private void Spin(float i_SpinRate)
+    {
+        transform.rotation *= Quaternion.Euler(Vector3.forward * i_SpinRate * Time.deltaTime);
+    }
+
+    private IEnumerator DecelerateAndStop(float i_SpinRate, float i_TargetStartDegree, float i_TargetDegreeRange)
+    {
         int count = 0;
 
         while (m_IsSpinningOffsetActive == true)
         {
-            transform.rotation *= Quaternion.Euler(Vector3.forward * spinRate * Time.deltaTime);
+            Spin(i_SpinRate);
 
-            if (targetStartDegree <= transform.eulerAngles.z && transform.eulerAngles.z <= targetStartDegree + targetDegreeRange)
+            if (IsInTargetRange(i_TargetStartDegree, i_TargetDegreeRange))
             {
-                if (transform.eulerAngles.z + 1f > targetStartDegree + targetDegreeRange)
+                if (transform.eulerAngles.z + 1f > i_TargetStartDegree + i_TargetDegreeRange)
                 {
                     count++;
                     Debug.Log(count);
@@ -64,5 +73,10 @@ public class FortuneWheel : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private bool IsInTargetRange(float targetStartDegree, float targetDegreeRange)
+    {
+        return targetStartDegree <= transform.eulerAngles.z && transform.eulerAngles.z <= targetStartDegree + targetDegreeRange;
     }
 }
