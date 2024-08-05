@@ -6,6 +6,7 @@ using UnityEngine;
 public class FortuneWheel : MonoBehaviour
 {
     [SerializeField] private float m_SpinSpeed = 2f;
+    [SerializeField] private float m_DecelerationFactor = 50f;
     private int m_StopIndex = -1;
     private bool m_IsSpinning = false;
     private bool m_IsSpinningOffsetActive = false;
@@ -53,7 +54,6 @@ public class FortuneWheel : MonoBehaviour
     {
         int extraSpins = 3;
         float deltaAngle = 0;
-        float decelerationFactor = 0.95f;
 
         while (m_IsSpinningOffsetActive == true)
         {
@@ -68,6 +68,8 @@ public class FortuneWheel : MonoBehaviour
                 }
             }
 
+            float fineTune = i_SpinRate - m_DecelerationFactor * Time.deltaTime;
+            i_SpinRate = Mathf.Max(fineTune, 10f);
             deltaAngle = Mathf.DeltaAngle(transform.eulerAngles.z, i_TargetStartDegree + i_TargetDegreeRange / 2);
 
             if (extraSpins <= 0 && Mathf.Abs(deltaAngle) < 1f)
@@ -75,11 +77,40 @@ public class FortuneWheel : MonoBehaviour
                 m_IsSpinningOffsetActive = false;
             }
 
-            //i_SpinRate *= decelerationFactor;
-
             yield return null;
         }
     }
+
+    /*private IEnumerator DecelerateAndStop(float i_SpinRate, float i_TargetStartDegree, float i_TargetDegreeRange)
+    {
+        int extraSpins = 3;
+        float deltaAngle = 0;
+        float decelerationFactor = 0.5f;
+
+        while (m_IsSpinningOffsetActive == true)
+        {
+            Spin(i_SpinRate);
+
+            if (IsInTargetRange(i_TargetStartDegree, i_TargetDegreeRange) == true)
+            {
+                if (transform.eulerAngles.z + 1f > i_TargetStartDegree + i_TargetDegreeRange)
+                {
+                    extraSpins--;
+                    Debug.Log(extraSpins);
+                    i_SpinRate *= decelerationFactor;
+                }
+            }
+
+            deltaAngle = Mathf.DeltaAngle(transform.eulerAngles.z, i_TargetStartDegree + i_TargetDegreeRange / 2);
+
+            if (extraSpins <= 0 && Mathf.Abs(deltaAngle) < 1f)
+            {
+                m_IsSpinningOffsetActive = false;
+            }
+
+            yield return null;
+        }
+    }*/
 
     private bool IsInTargetRange(float i_TargetStartDegree, float i_TargetDegreeRange)
     {
