@@ -51,32 +51,38 @@ public class FortuneWheel : MonoBehaviour
 
     private IEnumerator DecelerateAndStop(float i_SpinRate, float i_TargetStartDegree, float i_TargetDegreeRange)
     {
-        int count = 0;
+        int extraSpins = 3;
+        float deltaAngle = 0;
+        float decelerationFactor = 0.95f;
 
         while (m_IsSpinningOffsetActive == true)
         {
             Spin(i_SpinRate);
 
-            if (IsInTargetRange(i_TargetStartDegree, i_TargetDegreeRange))
+            if (IsInTargetRange(i_TargetStartDegree, i_TargetDegreeRange) == true)
             {
                 if (transform.eulerAngles.z + 1f > i_TargetStartDegree + i_TargetDegreeRange)
                 {
-                    count++;
-                    Debug.Log(count);
-                }
-
-                if (count > 2)
-                {
-                    m_IsSpinningOffsetActive = false;
+                    extraSpins--;
+                    Debug.Log(extraSpins);
                 }
             }
+
+            deltaAngle = Mathf.DeltaAngle(transform.eulerAngles.z, i_TargetStartDegree + i_TargetDegreeRange / 2);
+
+            if (extraSpins <= 0 && Mathf.Abs(deltaAngle) < 1f)
+            {
+                m_IsSpinningOffsetActive = false;
+            }
+
+            //i_SpinRate *= decelerationFactor;
 
             yield return null;
         }
     }
 
-    private bool IsInTargetRange(float targetStartDegree, float targetDegreeRange)
+    private bool IsInTargetRange(float i_TargetStartDegree, float i_TargetDegreeRange)
     {
-        return targetStartDegree <= transform.eulerAngles.z && transform.eulerAngles.z <= targetStartDegree + targetDegreeRange;
+        return i_TargetStartDegree <= transform.eulerAngles.z && transform.eulerAngles.z <= i_TargetStartDegree + i_TargetDegreeRange;
     }
 }
