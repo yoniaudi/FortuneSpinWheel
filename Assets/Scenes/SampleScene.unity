@@ -336,6 +336,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SpinSpeed: 1
+  m_DecelerationFactor: 50
+--- !u!50 &1136374985
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78625700}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1186013453
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,6 +877,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1265668688588500900, guid: 36ac605c580d6f94c886feb26f97e4f1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1136374982}
+    - targetCorrespondingSourceObject: {fileID: 1265668688588500900, guid: 36ac605c580d6f94c886feb26f97e4f1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1136374985}
   m_SourcePrefab: {fileID: 100100000, guid: 36ac605c580d6f94c886feb26f97e4f1, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
