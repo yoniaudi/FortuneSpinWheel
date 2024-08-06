@@ -53,13 +53,14 @@ public class FortuneWheel : MonoBehaviour
     private IEnumerator DecelerateAndStop(float i_SpinRate, float i_TargetStartDegree, float i_TargetDegreeRange)
     {
         int extraSpins = 3;
-        float deltaAngle = 0;
+        float deltaAngle = 0f;
+        float fineTune = 0f;
 
         while (m_IsSpinningOffsetActive == true)
         {
             Spin(i_SpinRate);
 
-            if (IsInTargetRange(i_TargetStartDegree, i_TargetDegreeRange) == true)
+            if (IsWheelArrowInTargetRange(i_TargetStartDegree, i_TargetDegreeRange) && extraSpins > 0)
             {
                 if (transform.eulerAngles.z + 1f > i_TargetStartDegree + i_TargetDegreeRange)
                 {
@@ -67,15 +68,23 @@ public class FortuneWheel : MonoBehaviour
                     Debug.Log(extraSpins);
                 }
             }
+            else
+            {
+                fineTune = i_SpinRate - m_DecelerationFactor;
 
-            float fineTune = i_SpinRate - m_DecelerationFactor * Time.deltaTime;
-            i_SpinRate = Mathf.Max(fineTune, 10f);
-            deltaAngle = Mathf.DeltaAngle(transform.eulerAngles.z, i_TargetStartDegree + i_TargetDegreeRange / 2);
+                i_SpinRate = Mathf.Max(fineTune, m_DecelerationFactor);
+                deltaAngle = Mathf.DeltaAngle(transform.eulerAngles.z, i_TargetStartDegree + i_TargetDegreeRange / 2);
 
-            if (extraSpins <= 0 && Mathf.Abs(deltaAngle) < 1f)
+                if (Mathf.Abs(deltaAngle) < 1f)
+                {
+                    m_IsSpinningOffsetActive = false;
+                }
+            }
+
+            /*if (extraSpins <= 0 && Mathf.Abs(deltaAngle) < 1f)
             {
                 m_IsSpinningOffsetActive = false;
-            }
+            }*/
 
             yield return null;
         }
@@ -112,7 +121,7 @@ public class FortuneWheel : MonoBehaviour
         }
     }*/
 
-    private bool IsInTargetRange(float i_TargetStartDegree, float i_TargetDegreeRange)
+    private bool IsWheelArrowInTargetRange(float i_TargetStartDegree, float i_TargetDegreeRange)
     {
         return i_TargetStartDegree <= transform.eulerAngles.z && transform.eulerAngles.z <= i_TargetStartDegree + i_TargetDegreeRange;
     }
