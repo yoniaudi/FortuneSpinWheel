@@ -6,7 +6,7 @@ using UnityEngine;
 public class FortuneWheel : MonoBehaviour
 {
     [SerializeField] private float m_SpinSpeed = 2f;
-    [SerializeField] private float m_DecelerationFactor = 70f;
+    private float m_DecelerationFactor = 180f;
     private int m_StopIndex = -1;
     private bool m_IsSpinning = false;
 
@@ -31,7 +31,6 @@ public class FortuneWheel : MonoBehaviour
         float targetStartDegree = 0f;
 
         m_IsSpinning = true;
-        m_IsSpinningOffsetActive = true;
 
         while (m_IsSpinning == true)
         {
@@ -61,12 +60,15 @@ public class FortuneWheel : MonoBehaviour
         {
             Spin(desiredSpins);
 
-            desiredSpins -= deceleration * Time.deltaTime * 100f;
+            if (desiredSpins > 180)
+            {
+                desiredSpins -= deceleration * fullSpin * Time.deltaTime;
+            }
 
             desiredSpins = Mathf.Max(desiredSpins, m_DecelerationFactor);
             deltaAngle = Mathf.DeltaAngle(transform.eulerAngles.z, i_TargetStartDegree + i_TargetDegreeRange / 2);
 
-            if (Mathf.Abs(deltaAngle) < 1f && desiredSpins <= m_DecelerationFactor)
+            if (Mathf.Abs(deltaAngle) < 2f && desiredSpins <= m_DecelerationFactor)
             {
                 break;
             }
