@@ -39,11 +39,6 @@ public class GameManager : MonoBehaviour
         m_Server.GetPrizeIndex();
     }
 
-    public void btnTestButton_Click()
-    {
-        m_FortuneWheel.StopSpin();
-    }
-
     private void OnDestroy()
     {
         m_Server.PrizeIndex_Received -= prizeIndexReceived;
