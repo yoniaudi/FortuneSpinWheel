@@ -9,7 +9,6 @@ public class FortuneWheel : MonoBehaviour
     [SerializeField] private float m_DecelerationFactor = 70f;
     private int m_StopIndex = -1;
     private bool m_IsSpinning = false;
-    private bool m_IsSpinningOffsetActive = false;
 
     public void StartSpin()
     {

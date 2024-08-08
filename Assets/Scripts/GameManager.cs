@@ -10,10 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Server m_Server = null;
     [SerializeField] private FortuneWheel m_FortuneWheel = null;
     [SerializeField] private Transform m_FortuneWheelTransform = null;
-    [SerializeField] private float m_FortuneWheelSpinSpeed = 5f;
-    [SerializeField] private float m_FortuneWheelSpinDuration = 7f;
     private const int k_AmountOfPrizes = 6;
-    private int m_PrizeIndex = -1;
 
     private void Start()
     {
@@ -22,7 +19,6 @@ public class GameManager : MonoBehaviour
 
     private void prizeIndexReceived(int i_PrizeIndex)
     {
-        m_PrizeIndex = i_PrizeIndex;
         Debug.Log($"Server -> Prize index number: {i_PrizeIndex}{Environment.NewLine}");
         m_FortuneWheel.StopSpin(i_PrizeIndex);
     }
