@@ -63,7 +63,6 @@ public class FortuneWheel : MonoBehaviour
             Spin(desiredSpins);
 
             desiredSpins -= deceleration * Time.deltaTime * 100f;
-            Debug.Log(desiredSpins);
 
             desiredSpins = Mathf.Max(desiredSpins, m_DecelerationFactor);
             deltaAngle = Mathf.DeltaAngle(transform.eulerAngles.z, i_TargetStartDegree + i_TargetDegreeRange / 2);
