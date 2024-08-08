@@ -6,7 +6,7 @@ using UnityEngine;
 public class FortuneWheel : MonoBehaviour
 {
     [SerializeField] private float m_SpinSpeed = 2f;
-    [SerializeField] private float m_DecelerationFactor = 50f;
+    [SerializeField] private float m_DecelerationFactor = 70f;
     private int m_StopIndex = -1;
     private bool m_IsSpinning = false;
     private bool m_IsSpinningOffsetActive = false;
@@ -37,6 +37,7 @@ public class FortuneWheel : MonoBehaviour
         while (m_IsSpinning == true)
         {
             Spin(spinRate);
+
             yield return null;
         }
 
@@ -52,74 +53,29 @@ public class FortuneWheel : MonoBehaviour
 
     private IEnumerator DecelerateAndStop(float i_SpinRate, float i_TargetStartDegree, float i_TargetDegreeRange)
     {
-        int extraSpins = 3;
+        const float fullSpin = 360f;
+        float desiredSpins = m_SpinSpeed * 360f;
         float deltaAngle = 0f;
-        float fineTune = 0f;
+        float deceleration = fullSpin / i_SpinRate;
 
-        while (m_IsSpinningOffsetActive == true)
+        while (desiredSpins >= 0)
         {
-            Spin(i_SpinRate);
+            Spin(desiredSpins);
 
-            if (IsWheelArrowInTargetRange(i_TargetStartDegree, i_TargetDegreeRange) && extraSpins > 0)
+            desiredSpins -= deceleration * Time.deltaTime * 100f;
+            Debug.Log(desiredSpins);
+
+            desiredSpins = Mathf.Max(desiredSpins, m_DecelerationFactor);
+            deltaAngle = Mathf.DeltaAngle(transform.eulerAngles.z, i_TargetStartDegree + i_TargetDegreeRange / 2);
+
+            if (Mathf.Abs(deltaAngle) < 1f && desiredSpins <= m_DecelerationFactor)
             {
-                if (transform.eulerAngles.z + 1f > i_TargetStartDegree + i_TargetDegreeRange)
-                {
-                    extraSpins--;
-                    Debug.Log(extraSpins);
-                }
+                break;
             }
-            else
-            {
-                fineTune = i_SpinRate - m_DecelerationFactor;
-
-                i_SpinRate = Mathf.Max(fineTune, m_DecelerationFactor);
-                deltaAngle = Mathf.DeltaAngle(transform.eulerAngles.z, i_TargetStartDegree + i_TargetDegreeRange / 2);
-
-                if (Mathf.Abs(deltaAngle) < 1f)
-                {
-                    m_IsSpinningOffsetActive = false;
-                }
-            }
-
-            /*if (extraSpins <= 0 && Mathf.Abs(deltaAngle) < 1f)
-            {
-                m_IsSpinningOffsetActive = false;
-            }*/
 
             yield return null;
         }
     }
-
-    /*private IEnumerator DecelerateAndStop(float i_SpinRate, float i_TargetStartDegree, float i_TargetDegreeRange)
-    {
-        int extraSpins = 3;
-        float deltaAngle = 0;
-        float decelerationFactor = 0.5f;
-
-        while (m_IsSpinningOffsetActive == true)
-        {
-            Spin(i_SpinRate);
-
-            if (IsInTargetRange(i_TargetStartDegree, i_TargetDegreeRange) == true)
-            {
-                if (transform.eulerAngles.z + 1f > i_TargetStartDegree + i_TargetDegreeRange)
-                {
-                    extraSpins--;
-                    Debug.Log(extraSpins);
-                    i_SpinRate *= decelerationFactor;
-                }
-            }
-
-            deltaAngle = Mathf.DeltaAngle(transform.eulerAngles.z, i_TargetStartDegree + i_TargetDegreeRange / 2);
-
-            if (extraSpins <= 0 && Mathf.Abs(deltaAngle) < 1f)
-            {
-                m_IsSpinningOffsetActive = false;
-            }
-
-            yield return null;
-        }
-    }*/
 
     private bool IsWheelArrowInTargetRange(float i_TargetStartDegree, float i_TargetDegreeRange)
     {
