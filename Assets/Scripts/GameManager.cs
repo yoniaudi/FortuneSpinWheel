@@ -20,10 +20,6 @@ public class GameManager : MonoBehaviour
         m_FortuneWheel.FortuneWheel_Stoped += onFortuneWheel_Stoped;
     }
 
-    /*private void Start()
-    {
-    }*/
-
     private void onPrizeIndex_Received(int i_PrizeIndex)
     {
         Debug.Log($"Server -> Prize index number: {i_PrizeIndex}{Environment.NewLine}");

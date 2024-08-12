@@ -204,6 +204,7 @@ MonoBehaviour:
   m_Server: {fileID: 79996602}
   m_FortuneWheel: {fileID: 1136374982}
   m_FortuneWheelTransform: {fileID: 1136374979}
+  m_SpinButton: {fileID: 1144165073}
 --- !u!4 &312576405
 Transform:
   m_ObjectHideFlags: 0
@@ -329,6 +330,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SpinSpeed: 3
+--- !u!114 &1144165073 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2863895283701526172, guid: 36ac605c580d6f94c886feb26f97e4f1, type: 3}
+  m_PrefabInstance: {fileID: 487504390105865926}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1874184308
 GameObject:
   m_ObjectHideFlags: 0
