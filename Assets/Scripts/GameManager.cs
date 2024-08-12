@@ -1,17 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Server m_Server = null;
     [SerializeField] private FortuneWheel m_FortuneWheel = null;
     [SerializeField] private PrizeManager m_PrizeManager = null;
-    [SerializeField] private Transform m_FortuneWheelTransform = null;
     [SerializeField] private UnityEngine.UI.Button m_SpinButton = null;
     private const int k_AmountOfPrizes = 6;
     private int m_PrizeIndex = -1;
@@ -32,7 +26,6 @@ public class GameManager : MonoBehaviour
     public void btnSpin_Clicked()
     {
         m_SpinButton.gameObject.SetActive(false);
-        m_FortuneWheelTransform.eulerAngles = Vector3.zero;
         rotateFortuneWheel();
     }
 

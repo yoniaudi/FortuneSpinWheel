@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FortuneWheel : MonoBehaviour
@@ -48,7 +47,7 @@ public class FortuneWheel : MonoBehaviour
 
     private void Spin(float i_SpinRate)
     {
-        transform.rotation *= Quaternion.Euler(Vector3.forward * i_SpinRate * Time.deltaTime);
+        transform.rotation *= Quaternion.Euler(i_SpinRate * Time.deltaTime * Vector3.forward);
     }
 
     private IEnumerator DecelerateAndStop(float i_SpinRate, float i_TargetStartDegree, float i_TargetDegreeRange)
@@ -65,7 +64,7 @@ public class FortuneWheel : MonoBehaviour
 
             if (Mathf.Abs(deltaAngle) < 2f && desiredSpins <= m_DecelerationFactor)
             {
-                transform.rotation = Quaternion.Euler(0,0, i_TargetStartDegree + i_TargetDegreeRange / 2);
+                transform.rotation = Quaternion.Euler(0, 0, i_TargetStartDegree + i_TargetDegreeRange / 2);
                 break;
             }
 
