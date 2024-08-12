@@ -53,28 +53,28 @@ public class FortuneWheel : MonoBehaviour
     private IEnumerator DecelerateAndStop(float i_SpinRate, float i_TargetStartDegree, float i_TargetDegreeRange)
     {
         const float fullSpin = 360f;
-        float desiredSpins = m_SpinSpeed * 360f;
         float deltaAngle = 0f;
         float deceleration = fullSpin / i_SpinRate;
+        float timeToWaitBeforeShowingPrize = 0.5f;
 
-        while (desiredSpins >= 0)
+        while (i_SpinRate >= 0)
         {
-            Spin(desiredSpins);
+            Spin(i_SpinRate);
             deltaAngle = Mathf.DeltaAngle(transform.eulerAngles.z, i_TargetStartDegree + i_TargetDegreeRange / 2);
 
-            if (Mathf.Abs(deltaAngle) < 2f && desiredSpins <= m_DecelerationFactor)
+            if (Mathf.Abs(deltaAngle) < 2f && i_SpinRate <= m_DecelerationFactor)
             {
                 transform.rotation = Quaternion.Euler(0, 0, i_TargetStartDegree + i_TargetDegreeRange / 2);
                 break;
             }
 
-            desiredSpins -= deceleration * fullSpin * Time.deltaTime;
-            desiredSpins = Mathf.Max(desiredSpins, m_DecelerationFactor);
+            i_SpinRate -= deceleration * fullSpin * Time.deltaTime * 2f;
+            i_SpinRate = Mathf.Max(i_SpinRate, m_DecelerationFactor);
 
             yield return null;
         }
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(timeToWaitBeforeShowingPrize);
 
         FortuneWheel_Stoped?.Invoke();
         Reset();

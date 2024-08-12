@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PrizeData", menuName = "CustomObjects/PrizeData", order = 2)]
+[CreateAssetMenu(fileName = "RewardData", menuName = "CustomObjects/PrizeData", order = 2)]
 public class PrizeData : ScriptableObject
 {
     public string Name = null;

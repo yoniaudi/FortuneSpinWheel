@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Server : MonoBehaviour
 {
+    private const int k_AmountOfPrizes = 6;
+    public int AmountOfPrizes { get { return k_AmountOfPrizes; } }
     public event Action<int> PrizeIndex_Received = null;
 
     public void GetPrizeIndex()
@@ -13,8 +15,8 @@ public class Server : MonoBehaviour
 
     private IEnumerator GetIndexFromServer()
     {
-        int prizeIndex = UnityEngine.Random.Range(0, 6);
-        float responseTime = UnityEngine.Random.Range(2f, 8f);
+        int prizeIndex = UnityEngine.Random.Range(0, k_AmountOfPrizes);
+        float responseTime = UnityEngine.Random.Range(1f, 4f);
 
         yield return new WaitForSeconds(responseTime);
 

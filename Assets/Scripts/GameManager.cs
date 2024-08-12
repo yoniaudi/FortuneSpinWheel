@@ -1,13 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Server m_Server = null;
     [SerializeField] private FortuneWheel m_FortuneWheel = null;
-    [SerializeField] private PrizeManager m_PrizeManager = null;
-    [SerializeField] private UnityEngine.UI.Button m_SpinButton = null;
-    private const int k_AmountOfPrizes = 6;
+    [SerializeField] private RewardManager m_RewardManager = null;
+    [SerializeField] private Button m_SpinButton = null;
     private int m_PrizeIndex = -1;
 
     private void OnEnable()
@@ -31,13 +31,13 @@ public class GameManager : MonoBehaviour
 
     private void rotateFortuneWheel()
     {
-        m_FortuneWheel.StartSpin(k_AmountOfPrizes);
+        m_FortuneWheel.StartSpin(m_Server.AmountOfPrizes);
         m_Server.GetPrizeIndex();
     }
 
     private void onFortuneWheel_Stoped()
     {
-        m_PrizeManager.ShowPrize(m_PrizeIndex);
+        m_RewardManager.ShowPrize(m_PrizeIndex);
         Reset();
     }
 
