@@ -65,6 +65,7 @@ public class FortuneWheel : MonoBehaviour
 
             if (Mathf.Abs(deltaAngle) < 2f && desiredSpins <= m_DecelerationFactor)
             {
+                transform.rotation = Quaternion.Euler(0,0, i_TargetStartDegree + i_TargetDegreeRange / 2);
                 break;
             }
 
@@ -74,11 +75,15 @@ public class FortuneWheel : MonoBehaviour
             yield return null;
         }
 
+        yield return new WaitForSeconds(1);
+
         FortuneWheel_Stoped?.Invoke();
+        Reset();
     }
 
-    private bool IsWheelArrowInTargetRange(float i_TargetStartDegree, float i_TargetDegreeRange)
+    private void Reset()
     {
-        return i_TargetStartDegree <= transform.eulerAngles.z && transform.eulerAngles.z <= i_TargetStartDegree + i_TargetDegreeRange;
+        m_StopIndex = -1;
+        transform.rotation = Quaternion.identity;
     }
 }

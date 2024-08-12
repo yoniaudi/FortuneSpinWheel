@@ -10,9 +10,11 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private Server m_Server = null;
     [SerializeField] private FortuneWheel m_FortuneWheel = null;
+    [SerializeField] private PrizeManager m_PrizeManager = null;
     [SerializeField] private Transform m_FortuneWheelTransform = null;
     [SerializeField] private UnityEngine.UI.Button m_SpinButton = null;
     private const int k_AmountOfPrizes = 6;
+    private int m_PrizeIndex = -1;
 
     private void OnEnable()
     {
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     private void onPrizeIndex_Received(int i_PrizeIndex)
     {
+        m_PrizeIndex = i_PrizeIndex;
         Debug.Log($"Server -> Prize index number: {i_PrizeIndex}{Environment.NewLine}");
         m_FortuneWheel.StopSpin(i_PrizeIndex);
     }
@@ -41,12 +44,19 @@ public class GameManager : MonoBehaviour
 
     private void onFortuneWheel_Stoped()
     {
-        m_SpinButton.gameObject.SetActive(true);
+        m_PrizeManager.ShowPrize(m_PrizeIndex);
+        Reset();
     }
 
     private void OnDestroy()
     {
         m_Server.PrizeIndex_Received -= onPrizeIndex_Received;
         m_FortuneWheel.FortuneWheel_Stoped -= onFortuneWheel_Stoped;
+    }
+
+    private void Reset()
+    {
+        m_PrizeIndex = -1;
+        m_SpinButton.gameObject.SetActive(true);
     }
 }
