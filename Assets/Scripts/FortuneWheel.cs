@@ -7,11 +7,14 @@ public class FortuneWheel : MonoBehaviour
 {
     [SerializeField] private float m_SpinSpeed = 2f;
     private float m_DecelerationFactor = 180f;
+    private int m_PrizesCount = 0;
     private int m_StopIndex = -1;
     private bool m_IsSpinning = false;
+    public event Action FortuneWheel_Stoped = null;
 
-    public void StartSpin()
+    public void StartSpin(int i_PrizesCount = 0)
     {
+        m_PrizesCount = i_PrizesCount;
         transform.rotation = Quaternion.Euler(0, 0, 0);
         StartCoroutine(SpinWheel());
     }
@@ -25,9 +28,8 @@ public class FortuneWheel : MonoBehaviour
     private IEnumerator SpinWheel()
     {
         const float fullSpin = 360f;
-        const int prizeSegments = 6;
         float spinRate = m_SpinSpeed * fullSpin;
-        float targetDegreeRange = fullSpin / prizeSegments;
+        float targetDegreeRange = fullSpin / m_PrizesCount;
         float targetStartDegree = 0f;
 
         m_IsSpinning = true;
@@ -59,13 +61,6 @@ public class FortuneWheel : MonoBehaviour
         while (desiredSpins >= 0)
         {
             Spin(desiredSpins);
-
-            if (desiredSpins > 180)
-            {
-                desiredSpins -= deceleration * fullSpin * Time.deltaTime;
-            }
-
-            desiredSpins = Mathf.Max(desiredSpins, m_DecelerationFactor);
             deltaAngle = Mathf.DeltaAngle(transform.eulerAngles.z, i_TargetStartDegree + i_TargetDegreeRange / 2);
 
             if (Mathf.Abs(deltaAngle) < 2f && desiredSpins <= m_DecelerationFactor)
@@ -73,8 +68,13 @@ public class FortuneWheel : MonoBehaviour
                 break;
             }
 
+            desiredSpins -= deceleration * fullSpin * Time.deltaTime;
+            desiredSpins = Mathf.Max(desiredSpins, m_DecelerationFactor);
+
             yield return null;
         }
+
+        FortuneWheel_Stoped?.Invoke();
     }
 
     private bool IsWheelArrowInTargetRange(float i_TargetStartDegree, float i_TargetDegreeRange)
