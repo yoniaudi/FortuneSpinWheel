@@ -1,6 +1,6 @@
 # FortuneSpinWheel
 
-I created a small test project using Unity game engine, where the goal was to receive a prize index from a server and make a fortune wheel stop at the requested prize. The system is designed to be generic, scalable, and maintainable, with clean and readable code.
+A small test project I created using Unity game engine, where the goal was to receive a prize index from a server and make a fortune wheel stop at the requested prize. The system is designed to be generic, scalable, and maintainable, with clean and readable code.
 
 You can check out the project on my GitHub:
 https://github.com/yoniaudi/FortuneSpinWheel
