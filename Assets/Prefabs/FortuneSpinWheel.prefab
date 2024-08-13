@@ -2343,16 +2343,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8325676411943617774}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cb3006d1cf099f4381503b8c48debc8, type: 3}
+  m_Script: {fileID: 11500000, guid: 7aa769001f363cd4aa24f246284e3f22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PrizeDatas:
-  - {fileID: 11400000, guid: 2c5f26a312d11ad41b7174d008876f2c, type: 2}
-  - {fileID: 11400000, guid: 83a6021f09dcaa447a24ca2bbf0a8afc, type: 2}
-  - {fileID: 11400000, guid: 75b66e5735536fe4b8f19e393278b5df, type: 2}
-  - {fileID: 11400000, guid: 1cf6bf450e84a5a4cac744db24c21a12, type: 2}
-  - {fileID: 11400000, guid: add32a20d4e7c834eaf56d5f067796b8, type: 2}
-  - {fileID: 11400000, guid: 619dd37251c3f7a40bdb3d6d4f04ea7a, type: 2}
+  m_PrizeDatas: []
   m_PrizeImage: {fileID: 4736185107146748527}
   m_PrizeText: {fileID: 3585289940078407172}
 --- !u!1 &8486800596973731010

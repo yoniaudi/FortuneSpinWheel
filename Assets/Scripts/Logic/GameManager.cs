@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Server m_Server = null;
     [SerializeField] private FortuneWheel m_FortuneWheel = null;
     [SerializeField] private RewardManager m_RewardManager = null;
     [SerializeField] private Button m_SpinButton = null;
+    private Server m_Server = new Server();
     private int m_PrizeIndex = -1;
 
     private void OnEnable()
