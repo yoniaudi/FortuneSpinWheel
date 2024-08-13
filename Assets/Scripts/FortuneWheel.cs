@@ -5,7 +5,7 @@ using UnityEngine;
 public class FortuneWheel : MonoBehaviour
 {
     [SerializeField] private float m_SpinSpeed = 2f;
-    private float m_DecelerationFactor = 180f;
+    private float m_DecelerationFactor = 270f;
     private int m_PrizesCount = 0;
     private int m_StopIndex = -1;
     private bool m_IsSpinning = false;
